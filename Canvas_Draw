@@ -1,0 +1,15 @@
+******************************************************************************************************************************
+****************************************************        Canvas        ****************************************************
+******************************************************************************************************************************
+
+Paint paint = new Paint();
+paint.setAntiAlias(true);
+Bitmap target = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+Canvas canvas = new Canvas(target);
+RectF rect = new RectF(0, 0, getWidth(), getHeight());
+canvas.drawRoundRect(rect, 50, 50, paint);
+paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+canvas.drawBitmap(source,null,rect, paint);
+通过画布画出圆角的矩形,同过setXfermode设置,来实现圆角图片的制作
+重写View的onDraw方法来显示View
+------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,146 @@
+******************************************************************************************************************************
+****************************************************        Others        ****************************************************
+******************************************************************************************************************************
+
+[类的比较]
+    Collections.sort(photoList,new Comparator<File>() {
+        @Override
+        public int compare(File s, File t1) {
+            return s.lastModified()>t1.lastModified()?1: s.lastModified()<t1.lastModified()?-1:0;
+        }
+    });
+    比较方法重写Comparator 比较类实现Comparable接口
+------------------------------------------------------------------------------------------------------------------------------
+
+[IntentChooser]
+    String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/storage/emulaged/0/DCIM/.UCam/photoFrame/photoframe/01.png";
+    File photoFile = new File(path);
+    Intent intent_send = new Intent(Intent.ACTION_SEND);
+    intent_send.setType("image/jepg");
+    Uri u = Uri.fromFile(photoFile);
+    intent_send.putExtra(Intent.EXTRA_STREAM, u);
+    Intent intent_chooser= Intent.createChooser(intent_send, this.getText(R.string.bwc_share));
+    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    this.startActivity(intent_chooser);
+    调用系统的选择界面,来选择同样action的应用来实现分享功能,设定setType来确定你要分享的类型,以及传输要分享的文件Uri
+------------------------------------------------------------------------------------------------------------------------------
+
+[SurfaceView]
+    用异线程进行画图呈现为一个独立的window一般使用时
+    他会自己让上层view进行让位，使自己呈现上来，这是一个挖洞的过程主要是使用了gatherTransparentRegion(Region region)
+    来使上层view进行透明而requestTransparentRegion(this)来请求上层view进行让位
+    SurfaceView可以通过setZOrderOnTop(true)来使自己显示在ｚ轴最上
+    或者使用setWindowType(WindowManager.LayoutParams...)来设置层级
+    SurfaceView上显示可以通过再覆盖一层SurfaceView来显示
+    SurfaceView继承需要运用线程进行绘制
+    Canvas canvas = getHolder().lockCanvas();
+    getHolder().unlockCanvasAndPost(canvas);
+    中间是绘画过程，使用线程进行一帧帧的绘画
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android killProcess]
+    public void killTasks() {
+        final int origPri = Process.getThreadPriority(Process.myTid());
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RecentTaskInfo> recentTasks =
+            activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE
+                    | ActivityManager.RECENT_INCLUDE_PROFILES);
+        int numTasks = recentTasks.size();
+        for (int i=0; i<numTasks; i++) {
+            ActivityManager.RecentTaskInfo recentInfo = recentTasks.get(i);
+            Intent intent = new Intent(recentInfo.baseIntent);
+            if (recentInfo.origActivity != null) {
+                intent.setComponent(recentInfo.origActivity);
+            }
+            String taskPkgName = intent.getComponent().getPackageName();
+            if (taskPkgName.equals(getPackageName())) {
+                continue;
+            }
+            activityManager.removeTask(recentInfo.persistentId);
+        }
+        Process.setThreadPriority(origPri);
+    }
+    杀进程
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android screenshot]
+    private Bitmap takeScreenShot(Activity activity){
+        Bitmap screenBitmap;
+        WindowManager windowManager;
+        DisplayMetrics displayMetrics;
+        Display display;
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        display = windowManager.getDefaultDisplay();
+        displayMetrics = new DisplayMetrics();
+        display.getRealMetrics(displayMetrics);
+        float[] dims = {displayMetrics.widthPixels, displayMetrics.heightPixels};
+        screenBitmap = SurfaceControl.screenshot((int) dims[0], (int) dims[1]);
+        return screenBitmap;
+    }
+    截屏
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android RunningTaskInfo]
+    ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+    List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+    boolean result = tasks.get(0).baseActivity.getPackageName().equals(getPackageName());
+    判断当前在最前运行的Activity
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android LockScreenState]
+    private void registerLockScreenStateReceiver() {
+        mLockScreenStateReceiver = new LockScreenStateIntentReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mLockScreenStateReceiver, filter);
+    }
+    得到手机锁屏的状态，屏幕亮，屏幕暗，和用户解锁的Action
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android PowerManager]
+    import android.os.PowerManager;
+    PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    可以得到系统的状态，比如屏幕亮，灭等．
+------------------------------------------------------------------------------------------------------------------------------
+
+[Android 资源引用]
+    一.@代表引用资源
+        1.引用自定义资源。格式：@[package:]type/name
+            android：text="@string/hello"
+        2.引用系统资源。格式：@android:type/name
+            android:textColor="@android:color/opaque_red"
+    注意：其实@android:type/name是@[package:]type/name 的一个子类
+    二.@*代表引用系统的非public资源。格式：@*android:type/name
+        系统资源定义分public和非public。public的声明在：
+        <sdk_path>\platforms\android-8\data\res\values\public.xml
+        @*android:type/name：可以调用系统定义的所有资源
+        @android:type/name：只能够调用publi属性的资源。
+    注意：没在public.xml中声明的资源是google不推荐使用的。
+    三.？代表引用主题属性
+        另外一种资源值允许你引用当前主题中的属性的值
+        这个属性值只能在style资源和XML属性中使用它允许你通过将它们改变为当前主题提供的标准变化来改变UI元素的外观，而不是提供具体的值
+        例如： android:textColor="?android:textDisabledColor"
+    注意，这和资源引用非常类似，除了我们使用一个"?"前缀代替了"@"
+    当你使用这个标记时，你就提供了属性资源的名称，它将会在主题中被查找，所以你不需要显示声明这个类型
+    (如果声明，其形式就是?android:attr/android:textDisabledColor)
+    除了使用这个资源的标识符来查询主题中的值代替原始的资源，其命名语法和"@"形式一致
+    ?[namespace:]type/name，这里类型可选。
+    四.@+代表在创建或引用资源
+        格式：@+type/name
+        含义：”+”表示在R.java中名为type的内部类中添加一条记录
+        如"@+id/button"的含义是在R.java 文件中的id 这个静态内部类添加一条常量名为button
+        该常量就是该资源的标识符
+        如果标示符（包括系统资源）已经存在则表示引用该标示符。最常用的就是在定义资源ID中
+        例如：
+        @+id/资源ID名         新建一个资源ID
+        @id/资源ID名          应用现有已定义的资源ID，包括系统ID
+        @android:id/资源ID名   引用系统ID，其等效于@id/资源ID名
+------------------------------------------------------------------------------------------------------------------------------
+
+[主题的继承]
+    <style name="Theme.MyTheme" parent="@android:Theme.Holo">
+    同时也可以运用 . 来表示继承关系，比如Theme.Holo.Spinner.DropDown.ActionBar
+------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,61 @@
+********************************************************************************************************************************
+****************************************************        Activity        ****************************************************
+********************************************************************************************************************************
+
+[FLAG_ACTIVITY_NEW_TASK]
+    在非Activity 中启动Activity需要给Intent设置一个flags
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+--------------------------------------------------------------------------------------------------------------------------------
+
+[setWillNotDraw(false);]
+    设置view是否更改
+    如果开发者用自定义的view
+    重写ondraw（）应该将调用此方法设置为false
+    这样程序会调用自定义的布局。
+--------------------------------------------------------------------------------------------------------------------------------
+
+[Android 一应用多入口]
+        android:taskAffinity="com.mediatek.gallery3d.app.PhotoActivity.task"
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+    android:taskAffinity
+        Activity的归属，也就是Activity应该在哪个Task中，Activity与Task的吸附关系
+        每个Activity都有taskAffinity属性，这个属性指出了它希望进入的Task
+        如果一个Activity没有显式的指明该 Activity的taskAffinity，那么它的这个属性就等于Application指明的taskAffinity
+        如果 Application也没有指明，那么该taskAffinity的值就等于包名
+        而Task也有自己的affinity属性，它的值等于它的根 Activity的taskAffinity的值
+--------------------------------------------------------------------------------------------------------------------------------
+
+[requestWindowFeature]
+    int     FEATURE_ACTION_BAR                   Flag for enabling the Action Bar.
+    int     FEATURE_ACTION_BAR_OVERLAY           Flag for requesting an Action Bar that overlays window content.
+    int     FEATURE_ACTION_MODE_OVERLAY          Flag for specifying the behavior of action modes when an Action Bar is not present.
+    int     FEATURE_CONTEXT_MENU                 Flag for the context menu.
+    int     FEATURE_CUSTOM_TITLE                 Flag for custom title.
+    int     FEATURE_INDETERMINATE_PROGRESS       Flag for indeterminate progress
+    int     FEATURE_LEFT_ICON                    Flag for having an icon on the left side of the title bar
+    int     FEATURE_NO_TITLE                     Flag for the "no title" feature, turning off the title at the top of the screen.
+    int     FEATURE_OPTIONS_PANEL                Flag for the "options panel" feature.
+    int     FEATURE_PROGRESS                     Flag for the progress indicator feature
+    int     FEATURE_RIGHT_ICON                   Flag for having an icon on the right side of the title bar
+--------------------------------------------------------------------------------------------------------------------------------
+
+********************************************************************************************************************************
+******************************************************        Theme        *****************************************************
+********************************************************************************************************************************
+
+[背景透明]
+    应用Theme的设置来实现透明背景的应用,Theme可以在style中自定义
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <item name="background">@color/app_theme_color</item>
+    </style>
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    Manifest中此主题属性设置背景透明的应用
+--------------------------------------------------------------------------------------------------------------------------------
+
+[全屏]
+    @android:style/Theme.NoTitleBar.Fullscreen Activity
+--------------------------------------------------------------------------------------------------------------------------------

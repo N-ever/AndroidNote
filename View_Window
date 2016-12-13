@@ -1,0 +1,33 @@
+******************************************************************************************************************************
+****************************************************        Window        ****************************************************
+******************************************************************************************************************************
+
+[FLAG]
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        FLAG_ALLOW_LOCK_WHILE_SCREEN_ON             当该window对用户可见的时候，允许锁屏
+        FLAG_BLUR_BEHIND                            让该window后所有东西都模糊(blur)
+        FLAG_DIM_BEHIND                             让该window后所有的东西都成暗淡（dim）
+        FLAG_DISMISS_KEYGUARD                       Window flag: when set the window will cause the keyguard to be dismissed, only if it is not a secure lock keyguard.
+        FLAG_DITHER                                 开启抖动（dithering）
+        FLAG_FORCE_NOT_FULLSCREEN                   恢复window非全屏显示
+        FLAG_FULLSCREEN                             让window进行全屏显示
+        FLAG_HARDWARE_ACCELERATED                   对该window进行硬件加速.该flag必须在设置你的Activity或Dialog的Content View之前进行设置
+                                                    而且如果你在mainfest文件中用android:hardwareAccelerated开启了该属性的话，那么你在程序中就不能再改变它
+                                                    mainfest文件中android:hardwareAccelerated属性默认是开启的("true")。
+        FLAG_KEEP_SCREEN_ON                         当该window对用户可见时，让设备屏幕处于高亮（bright）状态
+        FLAG_LAYOUT_IN_SCREEN                       让window占满整个手机屏幕，不留任何边界（border）
+        FLAG_LAYOUT_NO_LIMITS                       window大小不再不受手机屏幕大小限制，即window可能超出屏幕之外，这时部分内容在屏幕之外。
+        FLAG_NOT_FOCUSABLE                          让window不能获得焦点，这样用户快就不能向该window发送按键事件及按钮事件
+        FLAG_NOT_TOUCHABLE                          让该window不接受触摸屏事件
+        FLAG_NOT_TOUCH_MODAL                        即使在该window在可获得焦点情况下，仍然把该window之外的任何event发送到该window之后的其他window.
+        FLAG_SECURE                                 当该window在进行显示的时候，不允许截屏。
+        FLAG_SHOW_WALLPAPER                         在该window后显示系统的墙纸（wallpaper）
+        FLAG_SHOW_WHEN_LOCKED                       当锁屏的时候，开启屏幕显示该window.
+        FLAG_SPLIT_TOUCH                            当该window在可以接受触摸屏情况下，让因在该window之外，而发送到后面的window的触摸屏可以支持split touch.
+        FLAG_TOUCHABLE_WHEN_WAKING                  当手机处于睡眠状态时，如果屏幕被按下，那么该window将第一个收到到事件
+        FLAG_TURN_SCREEN_ON                         当然window被显示的时候，系统将把它当做一个用户活动事件，以点亮手机屏幕。
+        FLAG_WATCH_OUTSIDE_TOUCH                    如果你设置了该flag,那么在你FLAG_NOT_TOUNCH_MODAL的情况下
+                                                    即使触摸屏事件发送在该window之外，其事件被发送到了后面的window
+                                                    那么该window仍然将以MotionEvent.ACTION_OUTSIDE形式收到该触摸屏事件
+-------------------------------------------------------------------------------------------------------------------------------
