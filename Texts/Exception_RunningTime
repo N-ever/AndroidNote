@@ -11,3 +11,7 @@ java.lang.IllegalStateException:
     The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes.
     解决方法：Adapter的 notifyDataSetChanged() 方法必须在主线程里执行
 ----------------------------------------------------------------------------------------------------------------------------------------
+
+java.lang.NullPointerException:
+    Attempt to invoke virtual method 'int android.view.View.getImportantForAccessibility()' on a null object reference
+    解决方法：Adapter中的getView return 的值为 null
