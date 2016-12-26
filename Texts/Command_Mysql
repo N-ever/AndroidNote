@@ -1,0 +1,42 @@
+*****************************************************************************************************************************
+****************************************************        MySQL        ****************************************************
+*****************************************************************************************************************************
+
+SELECT * FROM admin WHERE adName = ? AND adPass = ?
+    查询语句
+-----------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO admin (adName,adPass) VALUES (?,?)
+    插入数据
+-----------------------------------------------------------------------------------------------------------------------------
+
+SELECT buginfo.id, buginfo.bugContent, users.userName, bugstatus.bugStatus, buginfo.bugStatusId
+        FROM buginfo
+        LEFT JOIN users ON buginfo.userId=users.id
+        LEFT JOIN bugstatus ON buginfo.bugStatusId=bugstatus.id
+        ORDER BY buginfo.id
+        LIMIT ?,?
+        多表联查
+        ORDER BY buginfo.id             DESC ASC 分别为倒序和顺序
+        LIMIT ?,?                       第一个为起始位置，第二个为个数
+-----------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE admin (
+
+    id INT(8) NOT NULL AUTO_INCREMENT,
+
+    adName VARCHAR(20) NULL,
+
+    adPass VARCHAR(18) NULL,
+
+    adLevel INT NULL DEFAULT 1,
+
+    PRIMARY KEY (id)
+
+)engine = innoDB default charset=utf8;
+    创建表
+-----------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE buginfo ADD CONSTRAINT fk_us_bi FOREIGN KEY (userId) REFERENCES users (id);
+    添加外键
+-----------------------------------------------------------------------------------------------------------------------------

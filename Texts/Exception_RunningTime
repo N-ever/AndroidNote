@@ -15,3 +15,8 @@ java.lang.IllegalStateException:
 java.lang.NullPointerException:
     Attempt to invoke virtual method 'int android.view.View.getImportantForAccessibility()' on a null object reference
     解决方法：Adapter中的getView return 的值为 null
+----------------------------------------------------------------------------------------------------------------------------------------
+
+java.sql.SQLException: Can not issue data manipulation statements with executeQuery()
+    解决方法：PrepareStatement 执行查询或有返回结果的才能用executeQuery() 其他的用execute()
+----------------------------------------------------------------------------------------------------------------------------------------
