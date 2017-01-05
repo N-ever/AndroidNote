@@ -66,3 +66,48 @@ public boolean onTouchEvent(MotionEvent ev)
         如果返回了 true 则会接收并消费该事件。
         如果返回 super.onTouchEvent(ev) 默认处理事件的逻辑和返回 false 时相同。
 
+**********************************************************************************************************************************
+*******************************************************        Code        *******************************************************
+**********************************************************************************************************************************
+
+Activity:
+    /**
+     * Called to process touch screen events.  You can override this to
+     * intercept all touch screen events before they are dispatched to the
+     * window.  Be sure to call this implementation for touch screen events
+     * that should be handled normally.
+     *
+     * @param ev The touch screen event.
+     *
+     * @return boolean Return true if this event was consumed.
+     */
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            onUserInteraction();
+            /// M: BMW @{
+            if (MultiWindowProxy.isSupported()) {
+                if (isResumed()) {
+                    Slog.v(TAG, "[BMW] dispatchTouchEvent, moveActivityTaskToFront:"
+                            + mToken);
+                    MultiWindowProxy.getInstance().moveActivityTaskToFront(mToken);
+                }
+            }
+            /// @}
+        }
+        //调用的是PhoneWindow的superDispatchTouchEvent 然后是 DecorView的superDispatchTouchEvent 然后是ViewGroup的dispatchTouchEvent
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        if (mWindow.shouldCloseOnTouch(this, event)) {
+            finish();
+            return true;
+        }
+
+        return false;
+    }
+
+ViewGroup:
