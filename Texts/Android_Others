@@ -144,3 +144,34 @@
     <style name="Theme.MyTheme" parent="@android:Theme.Holo">
     同时也可以运用 . 来表示继承关系，比如Theme.Holo.Spinner.DropDown.ActionBar
 ------------------------------------------------------------------------------------------------------------------------------
+
+[Android 6.0 权限申请]
+List<String> permission = new ArrayList<>();
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+    permission.add(Manifest.permission.CALL_PHONE);
+}
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    permission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+}
+if (!permission.isEmpty()) {
+    ActivityCompat.requestPermissions(this, permission.toArray(new String[permission.size()]), 1);
+} else {
+    makeCall();
+}
+
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    switch (requestCode) {
+        case 1:
+            if (grantResults.length > 0) {
+                for (int i : grantResults) {
+                    if (i != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                }
+            }
+            makeCall();
+            break;
+    }
+}

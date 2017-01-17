@@ -11,3 +11,9 @@ startActivityForResult(intent, requestCode);
     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(LOGO_BASE_PATH, fileName)));
     拍照保存的路径
 ------------------------------------------------------------------------------------------------------------------------------
+
+Intent intent = new Intent(Intent.ACTION_CALL);
+intent.setData(Uri.parse("tel://1234567890"));
+startActivity(intent);
+    打电话
+------------------------------------------------------------------------------------------------------------------------------
