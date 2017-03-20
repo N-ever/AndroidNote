@@ -31,3 +31,16 @@
                                                     即使触摸屏事件发送在该window之外，其事件被发送到了后面的window
                                                     那么该window仍然将以MotionEvent.ACTION_OUTSIDE形式收到该触摸屏事件
 -------------------------------------------------------------------------------------------------------------------------------
+
+[适应系统的Bar]
+    android:fitsSystemWindows
+    自适应屏幕的navigationbar和statusbar
+    @Override
+    protected boolean fitSystemWindows(Rect insets) {}
+    insets 提供系统Window矩形
+-------------------------------------------------------------------------------------------------------------------------------
+
+[Dialog 弹出输入框]
+    Window window = dialog.getWindow();
+    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+-------------------------------------------------------------------------------------------------------------------------------
