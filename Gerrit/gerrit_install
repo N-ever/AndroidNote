@@ -1,0 +1,30 @@
+sudo adduser gerrit
+su gerrit
+cd /etc/apache2/
+
+vi ports.conf
+Listen 8000
+
+cd sites-available
+sudo 000-default.conf
+<VirtualHost *:8000>
+cp ../.../gerrit.conf .
+
+cd mods-enabled
+sudo ln -s ../mods-available/proxy_balancer.load .
+sudo ln -s ../mods-available/proxy.load .
+sudo ln -s ../mods-available/proxy_http.load .
+
+sudo vi apache2.conf
+ServerName localhost
+
+sudo service apache2 restart
+error /var/log/apache2
+
+cp gerrit gerrit-2.13.7.war /home/gerrit/
+java -jar gerr*.war init -d review_site
+http
+proxy y
+
+touch /etc/gerrit.passwd
+htpasswd -cb gerrit.passwd name passwd (-c first time)
