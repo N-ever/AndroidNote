@@ -64,3 +64,10 @@ git remote add gerrit gerrit:Note
 sudo htpasswd -b gerrit.passwd username passwd
     添加新用户，或者修改存在用户的密码
 -----------------------------------------------------------------------------------------------------------------------------
+
+[添加用户权限]
+    People - Create New Group - Members - add new Member
+    Projects - List - All-Projects - Access
+    Edit - Reference: refs/head/* add Permission
+    Label Code-Review & Submit
+-----------------------------------------------------------------------------------------------------------------------------
