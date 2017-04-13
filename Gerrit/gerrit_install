@@ -8,12 +8,16 @@ Listen 8000
 cd sites-available
 sudo 000-default.conf
 <VirtualHost *:8000>
+change default 80 to 8000
 cp ../.../gerrit.conf .
 
 cd mods-enabled
 sudo ln -s ../mods-available/proxy_balancer.load .
 sudo ln -s ../mods-available/proxy.load .
 sudo ln -s ../mods-available/proxy_http.load .
+
+cd sites-enabled
+sudo ln -s ../sites-available/gerrit.conf .
 
 sudo vi apache2.conf
 ServerName localhost
@@ -26,5 +30,6 @@ java -jar gerr*.war init -d review_site
 http
 proxy y
 
+sudo apt-get install apache2-utils
 touch /etc/gerrit.passwd
 htpasswd -cb gerrit.passwd name passwd (-c first time)
