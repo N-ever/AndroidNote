@@ -136,3 +136,12 @@ chmod :改变档案的权限, SUID, SGID, SBIT 等等的特性
 chown root:root file
     修改文件owner:group
 -----------------------------------------------------------------------------------------------------------------------------------
+
+[install openjdk-8-jdk]
+    sudo add-apt-repository ppa:openjdk-r/ppa
+    sudo apt-get update
+    sudo apt-get install openjdk-8-jdk
+[change jdk]
+    sudo update-alternatives --config java
+    sudo update-alternatives --config javac
+-----------------------------------------------------------------------------------------------------------------------------------
