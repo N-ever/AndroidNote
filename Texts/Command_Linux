@@ -145,3 +145,6 @@ chown root:root file
     sudo update-alternatives --config java
     sudo update-alternatives --config javac
 -----------------------------------------------------------------------------------------------------------------------------------
+
+pwd
+    显示当前路径

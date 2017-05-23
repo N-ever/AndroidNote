@@ -1,0 +1,29 @@
+************************************************************************************************************************************
+****************************************************         Android_7.0        ****************************************************
+************************************************************************************************************************************
+
+[android:directBootAware="true"]
+    Android N引入了一个新特性： Direct Boot Mode—— 设备启动后进入的一个新模式，直到用户解锁（unlock）设备此阶段结束。
+
+    在此 Direct Boot Mode 下 APP 比较适合做一些：
+        Alarm、clock 类的操作
+        需要做重要的或紧急的通知
+        底层服务类
+    使用场景有很多，比如:手机丢了，捡到的人解不开锁，也做不了啥操作，现在任意工作在Direct Boot Mode 下的APP都可以“安全地”跑起来，和服务器建链，更加全方位的和捡手机的人进行沟通。
+
+    APP 要工作在DBM下的话，manifest 中加入：
+    <activity|provider|receiver|service ...
+         android:directBootAware=”true”>
+
+     APP在进入DBM后会收到系统的广播消息： Intent.ACTION_LOCKED_BOOT_COMPLETED —— 新增的。
+     用户解锁手机后，APP会收到另一条： Intent.ACTION_BOOT_COMPLETED —— 一直都有
+
+     DBM下和正常模式下最大的不同是：使用一种新的存储空间：Device protected storage，在正常模式下是看不到这个空间的数据的，这样的话就可以做一些更加完备的安全机制，比如：
+     把网络连接的Tocken、SSH……放在此独立空间，防止用户平常使用时被其他APP侦听、窃取。
+
+     最后一点：一台安装了Android N的设备，第一次使用要创建这个Device protected storage加密分区，方式有：
+     设备的setting中修改：Settings > Developer options > Convert to file encryption
+     fastboot中修改：
+         $ adb reboot-bootloader
+         $ fastboot --wipe-and-use-fbe
+------------------------------------------------------------------------------------------------------------------------------------
